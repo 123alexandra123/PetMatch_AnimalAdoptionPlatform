@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-COMPATIBLE" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pets Paradise</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <header>
+
+        <input type="checkbox" id="toggler">
+        <label for="toggler" class="fas fa-bars"></label>
+        <div class="titlu">
+            <a href="#" class="fas fa-paw"></a>
+            <a href="#" class="logo">Pet Match<span>.</span></a>
+        </div>
+
+        <button class="btn_login">Login</button>
+
+    </header>
+
+    <section class="body2" id="body2">
+        <div class="wrapper">
+            <span class="icon-close"><ion-icon name="close"></ion-icon></span>
+            <div class="form-box login">
+                <h2>Login</h2>
+                
+                <form action="login.php" method="POST">
+                    <div class="input-box">
+                        <span class="icon"><ion-icon name="mail"></ion-icon></span>  
+                        <input type="email" name="email" required>
+                        <label>Email</label>
+                    </div>
+                    <div class="input-box">
+                        <span class="icon"><ion-icon name="lock-closed"></ion-icon></span>
+                        <input type="password" name="password" required>
+                        <label>Password</label>
+                    </div>
+                    
+                    <button type="submit" class="btnn">Login</button>
+                    <div class="login-register">
+                        <p>Don't have an account? <a href="#"
+                        class="register-link">Register</a></p>
+                    </div>
+                </form>
+            </div>
+
+            <div class="form-box register">
+                <h2>Registration</h2>
+                
+                <form  action= "register.php" method="POST">
+                    <div class="input-box">
+                        <span class="icon"><ion-icon name="person"></ion-icon></span>  
+                        <input type="text" name="username" required>
+                        <label>Username</label>
+                    </div>
+                    <div class="input-box">
+                        <span class="icon"><ion-icon name="mail"></ion-icon></span>  
+                        <input type="email" name="email" required>
+                        <label>Email</label>
+                    </div>
+                    <div class="input-box">
+                        <span class="icon"><ion-icon name="lock-closed"></ion-icon></span>
+                        <input type="password" name="password" required>
+                        <label>Password</label>
+                    </div>
+                    
+                    <button type="submit" class="btnn">Register</button>
+                    <div class="login-register">
+                        <p>Already have an account? <a href="#"
+                        class="login-link">Login</a></p>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+        <script src="script.js"></script>
+        <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+        <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    </section>
+</body>
+</html>
