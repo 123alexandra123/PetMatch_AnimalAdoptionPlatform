@@ -90,7 +90,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
             </div>
             <div class="account-image">
-                <img src="<?php echo htmlspecialchars($profile_picture); ?>" alt="My Account Image">
+            <img src="<?php echo htmlspecialchars($profile_picture); ?>" alt="Profile Picture" onerror="this.src='images/default.png';">
+
                 <form method="POST" enctype="multipart/form-data" class="image-form">
                     <input type="file" name="new_photo" accept="image/*">
                     <button type="submit" name="upload_photo" class="btn">Upload Photo</button>
