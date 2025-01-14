@@ -1,8 +1,8 @@
 <?php
 session_start();
-include('db.php'); 
+include('db.php');
 
-unset($_SESSION['name'], $_SESSION['species'], $_SESSION['breed'], $_SESSION['age'], $_SESSION['sex'], $_SESSION['description'], $_SESSION['image_path']);
+
 $name = isset($_SESSION['name']) ? $_SESSION['name'] : '';
 $species = isset($_SESSION['species']) ? $_SESSION['species'] : '';
 $breed = isset($_SESSION['breed']) ? $_SESSION['breed'] : '';
@@ -12,23 +12,30 @@ $description = isset($_SESSION['description']) ? $_SESSION['description'] : '';
 $image_path = isset($_SESSION['image_path']) ? $_SESSION['image_path'] : 'images/default.png';
 $success_message = isset($_SESSION['success_message']) ? $_SESSION['success_message'] : '';
 
+unset($_SESSION['success_message']); 
 
-unset($_SESSION['success_message']);
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['reset_form'])) {
+    unset($_SESSION['name'], $_SESSION['species'], $_SESSION['breed'], $_SESSION['age'], $_SESSION['sex'], $_SESSION['description']);
+    $_SESSION['image_path'] = 'images/default.png'; 
+    header("Location: add_pet.php");
+    exit();
+}
 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['upload_photo'])) {
     if (isset($_FILES['new_photo']) && $_FILES['new_photo']['error'] === UPLOAD_ERR_OK) {
         $target_dir = "uploads/";
         if (!is_dir($target_dir)) {
-            mkdir($target_dir, 0777, true); 
+            mkdir($target_dir, 0777, true);
         }
 
         $file_name = basename($_FILES["new_photo"]["name"]);
         $target_file = $target_dir . uniqid() . "_" . $file_name;
 
         if (move_uploaded_file($_FILES["new_photo"]["tmp_name"], $target_file)) {
-            $image_path = $target_file; 
-            $_SESSION['image_path'] = $image_path; 
+            $image_path = $target_file;
+            $_SESSION['image_path'] = $image_path;
             $_SESSION['success_message'] = 'Imaginea a fost încărcată cu succes!';
         } else {
             $_SESSION['success_message'] = 'Eroare la încărcarea imaginii.';
@@ -40,7 +47,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['upload_photo'])) {
 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_pet'])) {
-
     $_SESSION['name'] = $name = $_POST['name'];
     $_SESSION['species'] = $species = $_POST['species'];
     $_SESSION['breed'] = $breed = $_POST['breed'];
@@ -48,15 +54,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_pet'])) {
     $_SESSION['sex'] = $sex = $_POST['sex'];
     $_SESSION['description'] = $description = $_POST['description'];
 
+    $image_path = !empty($_SESSION['image_path']) ? $_SESSION['image_path'] : 'images/default.png';
+
     $sql = "INSERT INTO adoptions (name, species, breed, age, sex, description, image_path)
             VALUES ('$name', '$species', '$breed', '$age', '$sex', '$description', '$image_path')";
 
     if ($conn->query($sql) === TRUE) {
         $_SESSION['success_message'] = 'Animalul a fost adăugat cu succes!';
-
-
         unset($_SESSION['name'], $_SESSION['species'], $_SESSION['breed'], $_SESSION['age'], $_SESSION['sex'], $_SESSION['description'], $_SESSION['image_path']);
-
         header("Location: add_pet.php");
         exit();
     } else {
@@ -75,7 +80,6 @@ $conn->close();
     <title>Add Pet - Pet Match</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link rel="stylesheet" href="style.css">
-   
 </head>
 <body>
     <header>
@@ -133,6 +137,10 @@ $conn->close();
                     </div>
                     <button type="submit" name="add_pet" class="btn">Add Pet</button>
                 </form>
+
+                <form action="add_pet.php" method="POST" style="margin-top: 10px;">
+                    <button type="submit" name="reset_form" class="btn">Reset Form</button>
+                </form>
             </div>
 
             <div class="pet-image">
@@ -145,20 +153,18 @@ $conn->close();
         </div>
     </section>
 
-   
     <div class="popup-message" id="popupMessage">
         <?php echo htmlspecialchars($success_message); ?>
     </div>
 
     <script>
-        
         const popupMessage = document.getElementById('popupMessage');
         if (popupMessage.textContent.trim() !== '') {
             popupMessage.style.display = 'block';
             setTimeout(() => {
                 popupMessage.style.display = 'none';
-            }, 3000); 
+            }, 3000);
         }
     </script>
 </body>
-</html>  
+</html>
